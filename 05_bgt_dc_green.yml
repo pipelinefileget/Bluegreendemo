@@ -1,0 +1,48 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: example-green
+  namespace: bluegreen
+  labels:
+    app: example-green
+    app.kubernetes.io/component: example-green
+    app.kubernetes.io/instance: example-green
+spec:
+  strategy:
+    type: Rolling
+    rollingParams:
+      updatePeriodSeconds: 1
+      intervalSeconds: 1
+      timeoutSeconds: 600
+      maxUnavailable: 25%
+      maxSurge: 25%
+    resources: {}
+    activeDeadlineSeconds: 21600
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - example-green
+        from:
+          kind: ImageStreamTag
+          namespace: bluegreen
+          name: 'example-green:v2'
+  replicas: 1
+  revisionHistoryLimit: 10
+  test: false
+  selector:
+    deploymentconfig: example-green
+  template:
+    metadata:
+      labels:
+        deploymentconfig: example-green
+    spec:
+      containers:
+        - name: example-green
+          image: >-
+            openshift/deployment-example:v2
+          ports:
+            - containerPort: 8080
+              protocol: TCP

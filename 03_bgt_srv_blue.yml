@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: example-blue
+  namespace: bluegreen
+  labels:
+    app: example-blue
+    app.kubernetes.io/component: example-blue
+    app.kubernetes.io/instance: example-blue
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080

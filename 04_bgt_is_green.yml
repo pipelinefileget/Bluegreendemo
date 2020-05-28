@@ -1,0 +1,19 @@
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: example-green
+  namespace: bluegreen
+  labels:
+    app: example-green
+    app.kubernetes.io/component: example-green
+    app.kubernetes.io/instance: example-green
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - name: v2
+      from:
+        kind: DockerImage
+        name: 'openshift/deployment-example:v2'
+      referencePolicy:
+        type: Source

@@ -1,0 +1,17 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: bluegreen-example
+  namespace: bluegreen
+  labels:
+    app: example-blue
+    app.kubernetes.io/component: example-blue
+    app.kubernetes.io/instance: example-blue
+spec:
+  host: bluegreen-example-bluegreen.apps.cluster-f0e8.f0e8.sandbox1284.opentlc.com
+  to:
+    kind: Service
+    name: example-blue
+    weight: 100
+  port:
+    targetPort: 8080-tcp
